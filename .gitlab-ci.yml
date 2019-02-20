@@ -14,7 +14,7 @@ openebs-openshift-deploy:
   image: atulabhi/kops:v8
   stage: PROVIDER-INFRA-SETUP
   script: 
-   - ./script/providers/infra-setup pod
+   - ./scripts/providers/infra-setup pod
   artifacts:
     paths:
       - .kube-openebs/    
@@ -28,4 +28,4 @@ openebs-openshift-deploy:
 percona-jiva-run/load/check 0:2:
   extends: .app_deploy_template
   script: 
-   - ./script/apps/percona/deployer/percona-app-deploy-jiva
+   - ./scripts/apps/percona/deployer/percona-app-deploy-jiva
