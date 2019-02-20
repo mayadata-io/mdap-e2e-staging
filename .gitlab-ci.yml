@@ -13,11 +13,9 @@ stages:
 openebs-openshift-deploy:
   image: atulabhi/kops:v8
   stage: PROVIDER-INFRA-SETUP
-  script: 
+  script:
+   - chmod 775 ./scripts/providers/infra-setup
    - ./scripts/providers/infra-setup pod
-  artifacts:
-    paths:
-      - .kube-openebs/    
 
 .app_deploy_template:
   image: atulabhi/kops:v8
