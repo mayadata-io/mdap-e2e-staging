@@ -1,0 +1,33 @@
+## TODO: Modularize the gitlab yaml to reuse templates
+
+## Define the stages & order of execution
+
+stages:
+  - PROVIDER-INFRA-SETUP
+  - STATEFUL-APP-DEPLOY
+  # - APP-FUNC-TEST
+  # - APP-CHAOS-TEST
+  # - CLUSTER-CLEANUP
+
+
+openebs-openhift-deploy:
+  image: atulabhi/kops:v8
+  stage: PROVIDER-INFRA-SETUP
+  dependencies:
+    - openshift-cluster
+  script: 
+   - ./script/provider/infra-setup pod
+  artifacts:
+    paths:
+- .kube-openebs/    
+
+.app_deploy_template:
+  image: atulabhi/kops:v8
+  stage: STATEFUL-APP-DEPLOY 
+  dependencies:
+    - openebs-openshift-deploy
+
+percona-jiva-run/load/check 0:2:
+  extends: .app_deploy_template
+  script: 
+- ./script/apps/percona/deployer/percona-app-deploy-jiva
