@@ -10,11 +10,9 @@ stages:
   # - CLUSTER-CLEANUP
 
 
-openebs-openhift-deploy:
+openebs-openshift-deploy:
   image: atulabhi/kops:v8
   stage: PROVIDER-INFRA-SETUP
-  dependencies:
-    - openshift-cluster
   script: 
    - ./script/provider/infra-setup pod
   artifacts:
