@@ -19,9 +19,9 @@ fi
 
 ##clone e2e-openshift-repo
 echo "cloneing e2e-openshift repo*************"
-ssh -i private.pem k8s@106.51.78.18 'git clone https://$user:$pass@github.com/mayadata-io/e2e-openshift.git'
+ssh -i private.pem k8s@106.51.78.18 'git clone https://$user:$pass@github.com/mayadata-io/mdap-e2e-staging.git'
 
-ssh -i private.pem k8s@106.51.78.18 'cd e2e-openshift; bash scripts/providers/infra-setup node'
+ssh -i private.pem k8s@106.51.78.18 'cd mdap-e2e-staging && git checkout gitlab && bash scripts/providers/infra-setup node'
 
 }
 
