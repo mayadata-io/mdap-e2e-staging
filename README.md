@@ -1,2 +1,1 @@
-# mdap-e2e-staging
-Staging repo for litmus test suites.
+# e2e-openshift
