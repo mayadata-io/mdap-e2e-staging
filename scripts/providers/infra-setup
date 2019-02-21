@@ -10,7 +10,7 @@ echo "*******************Checking the Cluster's Health********************"
 
 echo "Checking for the number of nodes in ready state*******************************"
 #ready_nodes=$(ssh -i private.pem -o StrictHostKeyChecking=no k8s@106.51.78.18 'kubectl get nodes | grep Ready | wc -l')
-ready_nodes=$(sshpass -p Test@123 ssh k8s@106.51.78.18 kubectl get nodes | grep Ready | wc -l)
+ready_nodes=$(sshpass -p Test@123 ssh -o StrictHostKeyChecking=no k8s@106.51.78.18 kubectl get nodes | grep Ready | wc -l)
 
 if [ "$ready_nodes" -eq 4 ]; then
 echo "Number of nodes in ready state is $ready_nodes"
@@ -21,9 +21,9 @@ fi
 
 ##clone e2e-openshift-repo
 echo "cloneing e2e-openshift repo*************"
-ssh -i private.pem -o StrictHostKeyChecking=no k8s@106.51.78.18 'git clone https://$user:$pass@github.com/mayadata-io/mdap-e2e-staging.git'
+sshpass -p Test@123 ssh -o StrictHostKeyChecking=no k8s@106.51.78.18 'git clone https://$user:$pass@github.com/mayadata-io/mdap-e2e-staging.git'
 
-ssh -i private.pem -o StrictHostKeyChecking=no k8s@106.51.78.18 'cd mdap-e2e-staging && git checkout gitlab && bash scripts/providers/infra-setup node'
+sshpass -p Test@123 ssh -o StrictHostKeyChecking=no k8s@106.51.78.18 'cd mdap-e2e-staging && git checkout gitlab && bash scripts/providers/infra-setup node'
 
 }
 
