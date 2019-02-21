@@ -12,7 +12,7 @@ stages:
 
 openshift-cluster-state:
   image: atulabhi/kops:v8
-  stage: CLUSTER_STATE
+  stage: CLUSTER-STATE
   script:
    - chmod 775 ./scripts/providers/cluster-state
    - ./scripts/providers/cluster-state
