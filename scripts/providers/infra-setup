@@ -6,7 +6,7 @@ apt-get install sshpass
 echo $private_key > private.pem
 chmod 400 private.pem
 
-echo "*******************Checking the Cluster's Health********************"
+echo "*********************Checking the Cluster's Health********************"
 
 echo "Checking for the number of nodes in ready state*******************************"
 #ready_nodes=$(ssh -i private.pem -o StrictHostKeyChecking=no k8s@106.51.78.18 'kubectl get nodes | grep Ready | wc -l')
