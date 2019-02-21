@@ -3,7 +3,7 @@ set -x
 
 apt-get install sshpass
 
-echo "*******************Checking the Cluster's Health********************"
+echo "*************************Checking the Cluster's Health********************"
 
 echo "Checking for the number of nodes in ready state*******************************"
 ready_nodes=$(sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip kubectl get nodes | grep Ready | wc -l)
