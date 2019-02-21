@@ -36,4 +36,5 @@ openebs-openshift-deploy:
 percona-jiva-run/load/check 0:2:
   extends: .app_deploy_template
   script: 
+   - chmod 755 ./scripts/apps/percona/percona-app-deploy-jiva
    - ./scripts/apps/percona/percona-app-deploy-jiva
