@@ -3,12 +3,19 @@
 ## Define the stages & order of execution
 
 stages:
+  - CLUSTER-STATE
   - PROVIDER-INFRA-SETUP
   - STATEFUL-APP-DEPLOY
   # - APP-FUNC-TEST
   # - APP-CHAOS-TEST
   # - CLUSTER-CLEANUP
 
+openshift-cluster-state:
+  image: atulabhi/kops:v8
+  stage: CLUSTER_STATE
+  script:
+   - chmod 775 ./scripts/providers/cluster-state
+   - ./scripts/providers/cluster-state
 
 openebs-openshift-deploy:
   image: atulabhi/kops:v8
@@ -16,6 +23,8 @@ openebs-openshift-deploy:
   script:
    - chmod 775 ./scripts/providers/infra-setup
    - ./scripts/providers/infra-setup pod
+  dependencies:
+    - openshift-cluster-state
 
 .app_deploy_template:
   image: atulabhi/kops:v8
@@ -26,4 +35,4 @@ openebs-openshift-deploy:
 percona-jiva-run/load/check 0:2:
   extends: .app_deploy_template
   script: 
-   - ./scripts/apps/percona/deployer/percona-app-deploy-jiva
+   - .scripts/apps/percona/percona-app-deploy-jiva

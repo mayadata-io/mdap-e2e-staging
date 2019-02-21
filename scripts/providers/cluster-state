@@ -1,0 +1,21 @@
+#!/bin/bash
+set -x
+
+apt-get install sshpass
+
+echo "*******************Checking the Cluster's Health********************"
+
+echo "Checking for the number of nodes in ready state*******************************"
+#ready_nodes=$(ssh -i private.pem -o StrictHostKeyChecking=no k8s@106.51.78.18 'kubectl get nodes | grep Ready | wc -l')
+ready_nodes=$(sshpass -p Test@123 ssh -o StrictHostKeyChecking=no k8s@106.51.78.18 kubectl get nodes | grep Ready | wc -l)
+
+if [ "$ready_nodes" -eq 4 ]; then
+echo "Number of nodes in ready state is $ready_nodes"
+echo "******Cluster state is in Healthy state****"
+else
+echo "All nodes are not ready"
+echo "******Cluster is in Unhealthy state*******"
+exit;
+fi
+
+
