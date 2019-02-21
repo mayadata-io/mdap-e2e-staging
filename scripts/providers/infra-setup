@@ -2,8 +2,7 @@
 set -x
 
 pod() {
-var=$(which sshpass; echo $?)
-if [ -z "$var" ]; then apt-get install sshpass; else echo "sshdpass is there"; fi
+apt-get install sshpass
 echo $private_key > private.pem
 chmod 400 private.pem
 
