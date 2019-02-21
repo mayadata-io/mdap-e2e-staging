@@ -14,6 +14,7 @@ openshift-cluster-state:
   image: atulabhi/kops:v8
   stage: CLUSTER-STATE
   script:
+   - echo "PIPELINEMODE=$CI_PIPELINE_SOURCE"
    - chmod 775 ./scripts/providers/cluster-state
    - ./scripts/providers/cluster-state
 
@@ -35,4 +36,4 @@ openebs-openshift-deploy:
 percona-jiva-run/load/check 0:2:
   extends: .app_deploy_template
   script: 
-   - .scripts/apps/percona/percona-app-deploy-jiva
+   - ./scripts/apps/percona/percona-app-deploy-jiva
