@@ -20,5 +20,9 @@ echo "******Cluster is in Unhealthy state*******"
 exit;
 fi
 
+echo "********Disabling Selinux on nodes********"
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip 'ssh root@10.12.22.11 setenforce 0'
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip 'ssh root@10.12.22.12 setenforce 0'
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip 'ssh root@10.12.22.13 setenforce 0'
 
 
