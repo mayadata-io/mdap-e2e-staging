@@ -4,7 +4,7 @@ set -x
 pod() {
 apt-get install sshpass
 
-echo "Checking for the number of nodes in ready state*******************************"
+echo "***Checking for the number of nodes in ready state*******************************"
 #ready_nodes=$(ssh -i private.pem -o StrictHostKeyChecking=no k8s@106.51.78.18 'kubectl get nodes | grep Ready | wc -l')
 ready_nodes=$(sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip kubectl get nodes | grep Ready | wc -l)
 
