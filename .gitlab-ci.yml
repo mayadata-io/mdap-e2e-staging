@@ -33,15 +33,21 @@ openebs-openshift-deploy:
   dependencies:
     - openebs-openshift-deploy
 
-percona-jiva-run/load/check 0:2:
+percona-cstor-deployment:
   extends: .app_deploy_template
   script: 
-   - chmod 755 ./scripts/apps/percona/percona-app-deploy-jiva
-   - ./scripts/apps/percona/percona-app-deploy-jiva
+   - chmod 755 ./scripts/apps/percona/percona-app-deploy-cstor
+   - ./scripts/apps/percona/percona-app-deploy-cstor pod
+
+cassandra-cstor-deployement:
+  extends: .app_deploy_template   
+  script: 
+   - chmod 755 ./scripts/apps/cassandra/cassandra-app-deploy-cstor
+   - ./scripts/apps/cassandra/cassandra-app-deploy-cstor pod
 
 cluster-cleanup:
   image: atulabhi/kops:v8
   stage: CLUSTER-CLEANUP
   script:
     - chmod 775 ./scripts/providers/cluster-cleanup
-    - ./scripts/providers/cluster-cleanup
+    - ./scripts/providers/cluster-cleanup pod
