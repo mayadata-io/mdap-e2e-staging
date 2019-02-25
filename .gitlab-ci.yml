@@ -8,7 +8,7 @@ stages:
   - STATEFUL-APP-DEPLOY
   # - APP-FUNC-TEST
   # - APP-CHAOS-TEST
-  # - CLUSTER-CLEANUP
+  - CLUSTER-CLEANUP
 
 openshift-cluster-state:
   image: atulabhi/kops:v8
@@ -38,3 +38,10 @@ percona-jiva-run/load/check 0:2:
   script: 
    - chmod 755 ./scripts/apps/percona/percona-app-deploy-jiva
    - ./scripts/apps/percona/percona-app-deploy-jiva
+
+cluster-cleanup:
+  image: atulabhi/kops:v8
+  stage: CLUSTER_CLEANUP
+  script:
+    - chmod 775 ./scripts/providers/cluster-cleanup
+    - ./scripts/providers/cluster-cleanup
