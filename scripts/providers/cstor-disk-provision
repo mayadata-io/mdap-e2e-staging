@@ -3,7 +3,7 @@ set -x
 pod() {
 apt-get install sshpass
 
-sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip 'cd mdap-e2e-staging && bash scripts/providers/cstor-disk-pool-provision node'
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip 'cd mdap-e2e-staging && bash scripts/providers/cstor-disk-provision node'
 
 }
 

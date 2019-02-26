@@ -22,7 +22,7 @@ echo $test_name
 echo "Updating litmus job yaml"
 
 run_test=litmus/apps/cassandra/deployers/run_litmus_test.yml
-sed -i -e 's/value: openebs-standard/value: openebs-cstor-sparse/g' $run_test
+sed -i -e 's/value: openebs-standalone/value: openebs-cstor-disk/g' $run_test
 
 cat $run_test
 

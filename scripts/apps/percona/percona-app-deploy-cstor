@@ -23,7 +23,7 @@ echo $test_name
 echo "Updating litmus job yaml"
 
 run_test=litmus/apps/percona/deployers/run_litmus_test.yml
-sed -i -e 's/value: openebs-standard/value: openebs-cstor-sparse/g' \
+sed -i -e 's/value: openebs-standard/value: openebs-cstor-disk/g' \
 -e 's/app: percona-deployment/app: percona-deployment-cstor/g' $run_test
 
 cat $run_test
