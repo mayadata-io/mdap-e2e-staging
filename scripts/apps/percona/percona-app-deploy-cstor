@@ -16,7 +16,7 @@ node() {
 present_dir=$(pwd)
 echo $present_dir
 
-echo "Generating test name***************************"
+echo "Generating test name****************************"
 test_name=$(bash utils/generate_test_name testcase=percona-deployment metadata="")
 echo $test_name
 
