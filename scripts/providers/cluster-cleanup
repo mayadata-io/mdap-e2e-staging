@@ -13,7 +13,7 @@ present_dir=$(pwd)
 echo $present_dir
 
 ansible-playbook litmus/k8s/on-prem/openshift-installer/revert_cluster_state.yml -vv
-cd ..rm -rf mdap-e2e-staging
+cd .. && rm -rf mdap-e2e-staging
 echo "********CLUSTER REVERTED*********************"
 }
 
