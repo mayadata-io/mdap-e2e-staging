@@ -48,6 +48,8 @@ cassandra-cstor-deployement:
 cluster-cleanup:
   image: atulabhi/kops:v8
   stage: CLUSTER-CLEANUP
+  dependencies:
+    - openshift-cluster-state 
   script:
     - chmod 775 ./scripts/providers/cluster-cleanup
     - ./scripts/providers/cluster-cleanup pod
