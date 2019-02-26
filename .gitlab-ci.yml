@@ -6,11 +6,11 @@ stages:
   - CLUSTER-STATE
   - PROVIDER-INFRA-SETUP
   - STATEFUL-APP-DEPLOY
-  # - APP-FUNC-TEST
-  # - APP-CHAOS-TEST
+  - APP-FUNC-TEST
+  - APP-CHAOS-TEST
   - CLUSTER-CLEANUP
 
-openshift-cluster-state:
+OS-3.10-EE:
   image: atulabhi/kops:v8
   stage: CLUSTER-STATE
   script:
@@ -18,7 +18,7 @@ openshift-cluster-state:
    - chmod 775 ./scripts/providers/cluster-state
    - ./scripts/providers/cluster-state
 
-openebs-openshift-deploy:
+openebs-0.8.1:
   image: atulabhi/kops:v8
   stage: PROVIDER-INFRA-SETUP
   before_script:
@@ -28,31 +28,55 @@ openebs-openshift-deploy:
    - chmod 775 ./scripts/providers/cstor-disk-provision
    - ./scripts/providers/cstor-disk-provision pod 
   dependencies:
-    - openshift-cluster-state
+    - OS-3.10-EE
 
 .app_deploy_template:
   image: atulabhi/kops:v8
   stage: STATEFUL-APP-DEPLOY 
   dependencies:
-    - openebs-openshift-deploy
+    - openebs-0.8.1
 
-percona-cstor-deployment:
+percona-cstor:
   extends: .app_deploy_template
   script: 
    - chmod 755 ./scripts/apps/percona/percona-app-deploy-cstor
    - ./scripts/apps/percona/percona-app-deploy-cstor pod
 
-cassandra-cstor-deployement:
+cassandra-cstor:
   extends: .app_deploy_template   
   script: 
    - chmod 755 ./scripts/apps/cassandra/cassandra-app-deploy-cstor
    - ./scripts/apps/cassandra/cassandra-app-deploy-cstor pod
 
+.func_test_template:
+  image: atulabhi/kops:v8
+  stage: APP-FUNC-TEST
+  when: always 
+
+app-replica-scale-{cassandra-cstor}:
+  extends: .func_test_template #dependencies: cassandra-cstor
+  script:
+    - chmod 775 ./scripts/apps/cassandra/functional/cstor/app-sts-replica-scale
+    - ./scripts/apps/cassandra/functional/cstor/app-sts-replica-scale  
+
+
+.chaos_test_template:
+  image: atulabhi/kops:v8
+  stage: APP-CHAOS-TEST
+  when: always
+
+
+tgt-kill-{percona-cstor}:
+  extends: .chaos_test_template #dependencies: percona-cstor
+  script:
+    - chmod 775 ./scripts/apps/percona/chaos/cstor/volume-target-failure
+    - ./scripts/apps/percona/chaos/cstor/volume-target-failure
+
 cluster-cleanup:
   image: atulabhi/kops:v8
   stage: CLUSTER-CLEANUP
   dependencies:
-    - openshift-cluster-state 
+    - OS-3.10-EE
   script:
     - chmod 775 ./scripts/providers/cluster-cleanup
     - ./scripts/providers/cluster-cleanup pod

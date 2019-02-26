@@ -21,6 +21,9 @@ test_name=$(bash scripts/utils/generate_test_name testcase=cstor-disk-pool-provi
 echo "Running the litmus test.."
 
 run_test=litmus/providers/cstor/cstor-disk-pool/run_litmus_test.yml
+
+cat $run_test
+
 bash scripts/utils/litmus_job_runner label='app:cstor-disk-pool-provision' job=$run_test
 
 echo "Dumping state of cluster post job run"; echo ""

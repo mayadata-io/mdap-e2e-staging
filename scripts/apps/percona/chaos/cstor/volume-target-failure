@@ -1,0 +1,44 @@
+#!/bin/bash
+set -x
+
+pod() {
+apt-get install sshpass
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip 'cd mdap-e2e-staging && bash scripts/apps/percona/chaos/cstor/volume-target-failure node'
+}
+
+node() {
+
+present_dir=$(pwd)
+echo $present_dir
+
+echo "Generating test name***************************"
+test_name=$(bash scripts/utils/generate_test_name testcase=openebs-target-failure metadata="")
+echo $test_name
+
+echo "Updating litmus job yaml"
+
+run_test=litmus/apps/percona/chaos/openebs_target_failure/run_litmus_test.yml
+
+cat $run_test
+
+echo "Running litmus test to perform OpenEBS target failure"
+
+bash scripts/utils/litmus_job_runner label='name:openebs-target-failure' job=$run_test
+
+echo "Dumping state of cluster post job run"; echo ""
+bash scripts/utils/dump_cluster_state;
+
+#################
+## GET RESULT  ##
+#################
+
+## Check the test status & result from the litmus result custom resource
+bash scripts/utils/get_litmus_result ${test_name}
+
+}
+
+if [ "$1" == "node" ];then
+  node 
+else
+  pod
+fi
