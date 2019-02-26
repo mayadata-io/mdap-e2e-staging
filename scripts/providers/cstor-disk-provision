@@ -1,0 +1,42 @@
+#!/bin/bash
+set -x
+pod() {
+apt-get install sshpass
+
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip 'cd mdap-e2e-staging && bash scripts/providers/cstor-disk-pool-provision node'
+
+}
+
+node() {
+
+#################
+## ENVIRONMENT ##
+#################
+
+test_name=$(bash scripts/utils/generate_test_name testcase=cstor-disk-pool-provision metadata="")
+
+#################
+## RUNNER MAIN ##
+#################
+echo "Running the litmus test.."
+
+run_test=litmus/providers/cstor/cstor-disk-pool/run_litmus_test.yml
+bash scripts/utils/litmus_job_runner label='app:cstor-disk-pool-provision' job=$run_test
+
+echo "Dumping state of cluster post job run"; echo ""
+bash scripts/utils/dump_cluster_state;
+
+#################
+## GET RESULT  ##
+#################
+
+## Check the test status & result from the litmus result custom resource
+bash scripts/utils/get_litmus_result ${test_name}
+
+}
+
+if [ "$1" == "node" ];then
+  node
+else
+  pod
+fi

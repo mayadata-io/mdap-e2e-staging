@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -x 
 
 litmus_test_name=$1
 

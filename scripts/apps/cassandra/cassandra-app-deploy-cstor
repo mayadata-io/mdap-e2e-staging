@@ -16,7 +16,7 @@ present_dir=$(pwd)
 echo $present_dir
 
 echo "Generating test name***************************"
-test_name=$(bash utils/generate_test_name testcase=cassandra-deployment metadata="")
+test_name=$(bash scripts/utils/generate_test_name testcase=cassandra-deployment metadata="")
 echo $test_name
 
 echo "Updating litmus job yaml"

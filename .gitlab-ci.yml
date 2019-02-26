@@ -21,9 +21,12 @@ openshift-cluster-state:
 openebs-openshift-deploy:
   image: atulabhi/kops:v8
   stage: PROVIDER-INFRA-SETUP
-  script:
+  before_script:
    - chmod 775 ./scripts/providers/infra-setup
    - ./scripts/providers/infra-setup pod
+  script:
+   - chmod 775 ./scripts/providers/cstor-disk-provision
+   - ./scripts/providers/cstor-disk-provision pod 
   dependencies:
     - openshift-cluster-state
 
