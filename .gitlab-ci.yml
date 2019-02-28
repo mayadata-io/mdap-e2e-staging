@@ -73,6 +73,7 @@ busybox-cstor:
 #    - ./scripts/apps/percona/chaos/cstor/volume-target-failure
 
 cluster-cleanup:
+  when: always
   image: atulabhi/kops:v8
   stage: CLUSTER-CLEANUP
   dependencies:
