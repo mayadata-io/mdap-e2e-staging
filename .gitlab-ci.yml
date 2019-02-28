@@ -11,7 +11,7 @@ stages:
   - CLUSTER-CLEANUP
 
 OS-3.10-EE:
-  image: atulabhi/kops:v8
+  image: openebs/openshift-ci:latest
   stage: CLUSTER-STATE
   script:
    - echo "PIPELINEMODE=$CI_PIPELINE_SOURCE"
@@ -19,7 +19,7 @@ OS-3.10-EE:
    - ./scripts/providers/cluster-state
 
 openebs-0.8.1:
-  image: atulabhi/kops:v8
+  image: openebs/openshift-ci:latest
   stage: PROVIDER-INFRA-SETUP
   before_script:
    - chmod 775 ./scripts/providers/infra-setup
@@ -31,7 +31,7 @@ openebs-0.8.1:
     - OS-3.10-EE
 
 .app_deploy_template:
-  image: atulabhi/kops:v8
+  image: openebs/openshift-ci:latest
   stage: STATEFUL-APP-DEPLOY 
   dependencies:
     - openebs-0.8.1
@@ -74,7 +74,7 @@ busybox-cstor:
 
 cluster-cleanup:
   when: always
-  image: atulabhi/kops:v8
+  image: openebs/openshift-ci:latest
   stage: CLUSTER-CLEANUP
   dependencies:
     - OS-3.10-EE

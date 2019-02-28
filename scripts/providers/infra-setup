@@ -19,7 +19,7 @@ fi
 echo "cloneing e2e-openshift repo*************"
 sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip 'git clone https://$user:$pass@github.com/mayadata-io/mdap-e2e-staging.git'
 
-sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip 'cd mdap-e2e-staging && git checkout gitlab && bash scripts/providers/infra-setup node'
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip 'cd mdap-e2e-staging && git checkout volume-distribute && bash scripts/providers/infra-setup node'
 
 }
 
