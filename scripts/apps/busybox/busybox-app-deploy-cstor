@@ -1,0 +1,56 @@
+#!/bin/bash
+
+set -x
+
+pod() {
+apt-get install sshpass
+
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip 'ssh root@10.12.22.10 oc adm policy add-scc-to-user anyuid system:serviceaccount:app-busybox-ns:default'
+
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip 'cd mdap-e2e-staging && bash scripts/apps/busybox/busybox-app-deploy-cstor node'
+
+}
+
+node() {
+
+present_dir=$(pwd)
+echo $present_dir
+
+echo "Generating test name****************************"
+test_name=$(bash scripts/utils/generate_test_name testcase=busybox-deployment metadata="")
+echo $test_name
+
+echo "Updating litmus job yaml"
+mkdir volume
+cd volume
+dir=$(pwd)
+git clone https://github.com/nsathyaseelan/litmus.git
+cd litmus
+git checkout volume-distribution
+
+run_test=apps/busybox/deployers/run_litmus_test.yml
+sed -i -e 's/value: openebs-cstor-sparse/value: openebs-cstor-disk/g' $run_test
+
+cat $run_test
+
+echo "Running litmus test for percona deploy.."
+
+bash scripts/utils/litmus_job_runner label='app: busybox-statefulset-litmus' job=$run_test
+
+echo "Dumping state of cluster post job run"; echo ""
+bash scripts/utils/dump_cluster_state;
+
+#################
+## GET RESULT  ##
+#################
+
+## Check the test status & result from the litmus result custom resource
+bash scripts/utils/get_litmus_result ${test_name}
+
+}
+
+if [ "$1" == "node" ];then
+  node 
+else
+  pod
+fi
