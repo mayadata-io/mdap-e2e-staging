@@ -6,4 +6,4 @@ deploy:
   stage: PROVIDER-INFRA-SETUP
   script:
     - echo ${INFRA_BRANCH} 
-#   - ./script/provider/infra-setup
+    - ./script/provider/infra-setup
