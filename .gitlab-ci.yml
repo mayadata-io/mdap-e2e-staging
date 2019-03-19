@@ -4,5 +4,6 @@ stages:
 deploy:
   image: openebs/openshift-ci:latest
   stage: PROVIDER-INFRA-SETUP
-  script: 
-   - ./script/provider/infra-setup
+  script:
+    - echo ${INFRA_BRANCH} 
+#   - ./script/provider/infra-setup
