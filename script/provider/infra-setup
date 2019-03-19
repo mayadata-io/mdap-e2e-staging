@@ -7,7 +7,7 @@ set -ex
 
 present_dir=$(pwd)
 #clone e2e-infrastructre to get the latest commits and run env-exporter script from env
-git clone -b $INFRA_BRANCH https://github.com/openebs/e2e-infrastructure.git
+git clone -b ${INFRA_BRANCH} https://github.com/openebs/e2e-infrastructure.git
 cd e2e-infrastructure/env
 ##exporting jiva-controller-image as env##
 export OPENEBS_IO_JIVA_CONTROLLER_IMAGE=$(eval python env_exporter.py -o jcontroller -fp ../baseline/baseline)
