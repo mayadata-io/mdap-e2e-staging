@@ -1,0 +1,34 @@
+#!/bin/bash
+set -ex
+
+######################
+##   ENVIRONMENT    ##
+######################
+
+present_dir=$(pwd)
+#clone e2e-infrastructre to get the latest commits and run env-exporter script from env
+git clone -b $INFRA_BRANCH https://github.com/openebs/e2e-infrastructure.git
+cd e2e-infrastructure/env
+##exporting jiva-controller-image as env##
+export OPENEBS_IO_JIVA_CONTROLLER_IMAGE=$(eval python env_exporter.py -o jcontroller -fp ../baseline/baseline)
+##exporting jiva-replica-image as env##
+export OPENEBS_IO_JIVA_REPLICA_IMAGE=$(eval python env_exporter.py -o jreplica -fp ../baseline/baseline)
+##exporting m-apiserver as env##
+export MAYA_APISERVER_IMAGE=$(eval python env_exporter.py -o mapi -fp ../baseline/baseline)
+##exporting maya-volume-exporter as env##
+export OPENEBS_IO_VOLUME_MONITOR_IMAGE=$(eval python env_exporter.py -o iovolume -fp ../baseline/baseline)
+##exporting istgt-image as env##
+export OPENEBS_IO_CSTOR_VOLUME_MGMT_IMAGE=$(eval python env_exporter.py -o cvolmgmt -fp ../baseline/baseline)
+##exporting zfs-image as env##
+export OPENEBS_IO_CSTOR_POOL_MGMT_IMAGE=$(eval python env_exporter.py -o cpoolmgmt -fp ../baseline/baseline)
+##
+export OPENEBS_IO_CSTOR_POOL_IMAGE=$(eval python env_exporter.py -o cstorpool -fp ../baseline/baseline)
+##
+export OPENEBS_IO_CSTOR_TARGET_IMAGE=$(eval python env_exporter.py -o target -fp ../baseline/baseline)
+##
+
+cd $present_dir
+
+
+## Display pipeline info
+echo $CI_PIPELINE_ID; echo $CI_PIPELINE_IID; echo $CI_COMMIT_SHA

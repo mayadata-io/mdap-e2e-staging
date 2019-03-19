@@ -1,0 +1,8 @@
+stages:
+  - PROVIDER-INFRA-SETUP
+
+deploy:
+  image: openebs/openshift-ci:latest
+  stage: PROVIDER-INFRA-SETUP
+  script: 
+   - ./script/provider/infra-setup
